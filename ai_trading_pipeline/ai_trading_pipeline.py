@@ -34,7 +34,9 @@ def run_automated_bot(enable_api=True):
                 daemon=True
             )
             api_thread.start()
-            print("✓ API Server started on http://localhost:8000")
+            print("\n🌐 DASHBOARD READY! Open your browser to:")
+            print("   → http://localhost:8000")
+            print("   → or http://127.0.0.1:8000\n")
         except Exception as e:
             print(f"Warning: Could not start API server: {e}")
 
