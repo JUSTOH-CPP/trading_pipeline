@@ -24,6 +24,12 @@ import MetaTrader5 as mt5
 # Global state management
 app = FastAPI(title="Trading Dashboard API")
 
+# Mount static files BEFORE defining routes
+try:
+    app.mount("/static", StaticFiles(directory="static"), name="static")
+except Exception as e:
+    print(f"Warning: Could not mount static files: {e}")
+
 # Data cache
 class CandleData(BaseModel):
     time: int
@@ -266,8 +272,5 @@ def run_api_server(host: str = "0.0.0.0", port: int = 8000):
     uvicorn.run(app, host=host, port=port, log_level="info")
 
 if __name__ == "__main__":
-    # Serve static files from the 'static' directory
-    app.mount("/static", StaticFiles(directory="static"), name="static")
-
     # Run the server
     run_api_server(host="0.0.0.0", port=8000)
