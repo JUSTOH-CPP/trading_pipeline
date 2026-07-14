@@ -5,7 +5,6 @@ import config
 import data_ingestion
 import model_pipeline
 import mt5_execution
-import MetaTrader5 as mt5
 import threading
 
 # Import API server (optional)
@@ -43,7 +42,8 @@ def run_automated_bot(enable_api=True):
         print("Bot startup aborted due to MT5 connection failure.")
         return
 
-    print(f"Bot successfully synchronized on account {mt5.account_info().login if mt5.account_info() else 'Active'}.")
+    account = mt5_execution.mt5.account_info()
+    print(f"Bot successfully synchronized on account {account.login if account else 'Active'}.")
     print("Listening for market clock triggers...")
 
     last_processed_minute = -1
@@ -104,7 +104,7 @@ def run_automated_bot(enable_api=True):
     except KeyboardInterrupt:
         print("\nBot execution paused manually by user.")
     finally:
-        mt5.shutdown()
+        mt5_execution.mt5.shutdown()
         print("MetaTrader 5 connection safely closed.")
 
 if __name__ == "__main__":
