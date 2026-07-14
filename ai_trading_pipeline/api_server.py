@@ -90,11 +90,12 @@ async def get_chart_data():
     Uses cached data for efficiency.
     """
     cache = data_cache.get_cache()
+    metadata = cache.get_metadata() or {}
     return ChartDataResponse(
         candles=[CandleData(**candle) for candle in cache.get_candles(limit=500)],
         signals=[SignalData(**signal) for signal in cache.get_signals(limit=50)],
-        symbol=cache.get_metadata().get("symbol", config.SYMBOL_MT5),
-        interval=cache.get_metadata().get("interval", config.INTERVAL)
+        symbol=metadata.get("symbol") or config.SYMBOL_MT5,
+        interval=metadata.get("interval") or config.INTERVAL
     )
 
 @app.get("/api/account-info")
